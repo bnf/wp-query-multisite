@@ -1,6 +1,5 @@
 # WordPress Query Multisite
-
-This is a custom version of [WP_Query_Multisite](https://github.com/ericandrewlewis/WP_Query_Multisite), by [ericandrewlewis](https://github.com/ericandrewlewis), to support multisite post queries but without changing the class declaration, we will use the good ol' **WP_Query**. Just by entering the custom query var **multisite => 1** on your query args and your query is now global.
+This is a plugin version of [miguelpeixe/WP_Query_Multisite](https://github.com/miguelpeixe/WP_Query_Multisite), which is a custom version of [WP_Query_Multisite](https://github.com/ericandrewlewis/WP_Query_Multisite) by [ericandrewlewis](https://github.com/ericandrewlewis) to support multisite post queries.
 
 -----------------
 

@@ -1,8 +1,38 @@
 <?php
+/**
+ * WPQueryMultisite class.
+ *
+ * @package     TimJensen\WPQueryMultisite
+ * @author      Tim Jensen <tim@timjensen.us>
+ * @license     GNU General Public License 2.0+
+ * @link        https://www.timjensen.us
+ */
 
-class WP_Query_Multisite {
+namespace TimJensen\WPQueryMultisite;
 
-	function __construct() {
+/**
+ * Class WPQueryMultisite
+ *
+ * @package TimJensen\WPQueryMultisite
+ */
+class WPQueryMultisite {
+
+	/**
+	 * Static proxy for returning a shared instance of the class.
+	 *
+	 * @return WPQueryMultisite
+	 */
+	public static function make() {
+		static $self = null;
+
+		if ( null === $self ) {
+			$self = new self();
+		}
+
+		return $self;
+	}
+
+	function init() {
 		add_filter('query_vars', array($this, 'query_vars'));
 		add_action('pre_get_posts', array($this, 'pre_get_posts'), 100);
 		add_filter('posts_clauses', array($this, 'posts_clauses'), 10, 2);
@@ -117,7 +147,3 @@ class WP_Query_Multisite {
 		}
 	}
 }
-
-new WP_Query_Multisite();
-
-?>

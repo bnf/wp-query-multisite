@@ -1,0 +1,16 @@
+{
+    "name": "timjensen/wp-query-multisite",
+    "description": "Allows WP_Query to query across the entire multisite network.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "timothyjensen",
+            "email": "tim@timjensen.us"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4"
+    }
+}
