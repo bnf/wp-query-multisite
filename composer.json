@@ -1,5 +1,5 @@
 {
-    "name": "timjensen/wp-query-multisite",
+    "name": "timothyjensen/wp-query-multisite",
     "description": "Allows WP_Query to query across the entire multisite network.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
