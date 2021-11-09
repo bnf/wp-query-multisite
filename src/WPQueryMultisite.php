@@ -51,10 +51,10 @@ class WPQueryMultisite {
 	function pre_get_posts($query) {
 		if($query->get('multisite')) {
 
-			global $wpdb, $blog_id;
+			global $wpdb;
 
 			$this->loop_end = false;
-			$this->blog_id = $blog_id;
+			$this->blog_id = get_current_blog_id();
 
 			$site_IDs = $wpdb->get_col( "select blog_id from $wpdb->blogs" );
 
@@ -129,19 +129,16 @@ class WPQueryMultisite {
 	}
 
 	function the_post($post) {
-		global $blog_id;
-
-		if( isset( $this->loop_end ) && !$this->loop_end && $post->site_ID && $blog_id !== $post->site_ID) {
+		if( isset( $this->loop_end ) && !$this->loop_end && $post->site_ID && get_current_blog_id() !== $post->site_ID) {
 			switch_to_blog($post->site_ID);
 		}
 
 	}
 
 	function loop_end($query) {
-		global $switched;
 		if($query->get('multisite')) {
 			$this->loop_end = true;
-			if($switched) {
+			if($GLOBALS['switched'] ?? false) {
 				switch_to_blog($this->blog_id);
 			}
 		}
