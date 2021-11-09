@@ -10,6 +10,9 @@
 
 namespace TimJensen\WPQueryMultisite;
 
+use WP_Post;
+use WP_Query;
+
 /**
  * Class WPQueryMultisite
  *
@@ -19,10 +22,8 @@ class WPQueryMultisite {
 
 	/**
 	 * Static proxy for returning a shared instance of the class.
-	 *
-	 * @return WPQueryMultisite
 	 */
-	public static function make() {
+	public static function make(): self {
 		static $self = null;
 
 		if ( null === $self ) {
@@ -32,7 +33,7 @@ class WPQueryMultisite {
 		return $self;
 	}
 
-	function init() {
+	public function init(): void {
 		add_filter('query_vars', array($this, 'query_vars'));
 		add_action('pre_get_posts', array($this, 'pre_get_posts'), 100);
 		add_filter('posts_clauses', array($this, 'posts_clauses'), 10, 2);
@@ -41,14 +42,14 @@ class WPQueryMultisite {
 		add_action('loop_end', array($this, 'loop_end'));
 	}
 
-	function query_vars($vars) {
+	public function query_vars(array $vars): array {
 		$vars[] = 'multisite';
 		$vars[] = 'sites__not_in';
 		$vars[] = 'sites__in';
 		return $vars;
 	}
 
-	function pre_get_posts($query) {
+	public function pre_get_posts(WP_Query $query): void {
 		if($query->get('multisite')) {
 
 			global $wpdb;
@@ -74,7 +75,7 @@ class WPQueryMultisite {
 		}
 	}
 
-	function posts_clauses($clauses, $query) {
+	public function posts_clauses(array $clauses, WP_Query $query): array {
 		if($query->get('multisite')) {
 			global $wpdb;
 
@@ -112,7 +113,7 @@ class WPQueryMultisite {
 		return $clauses;
 	}
 
-	function posts_request($sql, $query) {
+	public function posts_request(string $sql, WP_Query $query): string {
 
 		if($query->get('multisite')) {
 
@@ -129,8 +130,7 @@ class WPQueryMultisite {
 		return $sql;
 	}
 
-	function the_post($post) {
-
+	public function the_post(WP_Post $post): void {
 		if (isset($post->site_ID)) {
 			$post->site_ID = (int)$post->site_ID;
 		} else {
@@ -143,7 +143,7 @@ class WPQueryMultisite {
 
 	}
 
-	function loop_end($query) {
+	public function loop_end($query): void {
 		if($query->get('multisite')) {
 			$this->loop_end = true;
 			if($GLOBALS['switched'] ?? false) {
