@@ -133,9 +133,11 @@ class WPQueryMultisite {
 
 		if (isset($post->site_ID)) {
 			$post->site_ID = (int)$post->site_ID;
+		} else {
+			$post->site_ID = get_current_blog_id();
 		}
 
-		if( isset( $this->loop_end ) && !$this->loop_end && isset($post->site_ID) && get_current_blog_id() !== $post->site_ID) {
+		if( isset( $this->loop_end ) && !$this->loop_end && get_current_blog_id() !== $post->site_ID) {
 			switch_to_blog($post->site_ID);
 		}
 
