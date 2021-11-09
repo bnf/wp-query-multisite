@@ -68,6 +68,7 @@ class WPQueryMultisite {
 						unset($site_IDs[$key]);
 
 			$site_IDs = array_values($site_IDs);
+			$site_IDs = array_map('intval', $site_IDs);
 
 			$this->sites_to_query = $site_IDs;
 		}
@@ -129,7 +130,12 @@ class WPQueryMultisite {
 	}
 
 	function the_post($post) {
-		if( isset( $this->loop_end ) && !$this->loop_end && $post->site_ID && get_current_blog_id() !== $post->site_ID) {
+
+		if (isset($post->site_ID)) {
+			$post->site_ID = (int)$post->site_ID;
+		}
+
+		if( isset( $this->loop_end ) && !$this->loop_end && isset($post->site_ID) && get_current_blog_id() !== $post->site_ID) {
 			switch_to_blog($post->site_ID);
 		}
 
