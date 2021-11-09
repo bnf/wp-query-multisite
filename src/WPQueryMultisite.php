@@ -20,6 +20,10 @@ use WP_Query;
  */
 class WPQueryMultisite {
 
+	protected /*?bool*/ $loop_end = null;
+
+	protected /*int*/ $blog_id = 0;
+
 	/**
 	 * Static proxy for returning a shared instance of the class.
 	 */
@@ -137,7 +141,7 @@ class WPQueryMultisite {
 			$post->site_ID = get_current_blog_id();
 		}
 
-		if( isset( $this->loop_end ) && !$this->loop_end && get_current_blog_id() !== $post->site_ID) {
+		if($this->loop_end === false && get_current_blog_id() !== $post->site_ID) {
 			switch_to_blog($post->site_ID);
 		}
 
