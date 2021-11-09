@@ -56,7 +56,7 @@ class WPQueryMultisite {
 			$this->loop_end = false;
 			$this->blog_id = get_current_blog_id();
 
-			$site_IDs = $wpdb->get_col( "select blog_id from $wpdb->blogs" );
+			$site_IDs = $wpdb->get_col( "select blog_id from {$wpdb->blogs}" );
 
 			if ( $query->get('sites__not_in') )
 				foreach($site_IDs as $key => $site_ID )
@@ -91,7 +91,7 @@ class WPQueryMultisite {
 					$ms_select .= ' GROUP BY ' . $clauses['groupby'];
 
 				$ms_select = str_replace($root_site_db_prefix, $wpdb->prefix, $ms_select);
-				$ms_select = " SELECT $wpdb->posts.*, '$site_ID' as site_ID FROM $wpdb->posts $ms_select ";
+				$ms_select = " SELECT {$wpdb->posts}.*, {$site_ID} as site_ID FROM {$wpdb->posts} {$ms_select} ";
 
 				$this->ms_select[] = $ms_select;
 
@@ -121,7 +121,7 @@ class WPQueryMultisite {
 			$sql = str_replace('WHERE 1=1', '', $sql);
 
 			// Multisite request
-			$sql = str_replace("$wpdb->posts.* FROM $wpdb->posts", 'tables.* FROM ( ' . implode(" UNION ", $this->ms_select) . ' ) tables', $sql);
+			$sql = str_replace("{$wpdb->posts}.* FROM {$wpdb->posts}", 'tables.* FROM ( ' . implode(" UNION ", $this->ms_select) . ' ) tables', $sql);
 
 		}
 
